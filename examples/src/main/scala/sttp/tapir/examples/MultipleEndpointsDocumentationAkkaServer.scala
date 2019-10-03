@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicReference
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import com.github.ghik.silencer.silent
+import com.softwaremill.sttp._
 import io.circe.generic.auto._
 import sttp.tapir._
 import sttp.tapir.docs.openapi._
@@ -22,10 +23,12 @@ object MultipleEndpointsDocumentationAkkaServer extends App {
   case class Author(name: String)
   case class Book(title: String, year: Int, author: Author)
 
+  implicit val plainVectorBookCodec = Codec.stringPlainCodecUtf8.map[Vector[Book]](_ => ???)(_ => "")
+
   val booksListing: Endpoint[Unit, Unit, Vector[Book], Nothing] = endpoint.get
     .in("books")
     .in("list" / "all")
-    .out(jsonBody[Vector[Book]])
+    .out(EndpointOutput.Multiple[Vector[Book]](Vector(jsonBody[Vector[Book]], plainBody[Vector[Book]])))
 
   val addBook: Endpoint[Book, Unit, Unit, Nothing] = endpoint.post
     .in("books")
@@ -67,9 +70,10 @@ object MultipleEndpointsDocumentationAkkaServer extends App {
 
   val bindAndCheck = Http().bindAndHandle(routes, "localhost", 8080).map { _ =>
     // testing
-    println("Go to: http://localhost:8080/docs")
-    println("Press any key to exit ...")
-    scala.io.StdIn.readLine()
+    implicit val backend: SttpBackend[Id, Nothing] = HttpURLConnectionBackend()
+    val result1: String = sttp.get(uri"http://localhost:8080/docs/docs.yaml").send().unsafeBody
+    // testing
+    println(result1)
   }
 
   // cleanup
