@@ -79,17 +79,18 @@ private[openapi] class EndpointToOperationResponse(objectSchemas: ObjectSchemas,
       case EndpointIO.StreamBodyWrapper(StreamingEndpointIO.Body(s, mt, i)) =>
         (i.description, codecToMediaType(s, mt, i.example))
     }
-    val body = bodies.headOption
 
     val statusCodeDescriptions = outputs.collect {
       case EndpointOutput.FixedStatusCode(_, EndpointIO.Info(Some(desc), _)) => desc
     }
 
+    val body = bodies.headOption
+
     val description = body.flatMap(_._1).getOrElse(statusCodeDescriptions.headOption.getOrElse(""))
 
-    val content = body.map(_._2).getOrElse(ListMap.empty)
+    val content = bodies.map(_._2).fold(ListMap.empty)(_ ++ _)
 
-    if (body.isDefined || headers.nonEmpty) {
+    if (bodies.nonEmpty || headers.nonEmpty) {
       Some(Response(description, headers.toListMap, content))
     } else if (outputs.nonEmpty) {
       Some(Response(description, ListMap.empty, ListMap.empty))
