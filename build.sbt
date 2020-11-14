@@ -1,5 +1,5 @@
 val scala2_12 = "2.12.11"
-val scala2_13 = "2.13.1"
+val scala2_13 = "2.13.3"
 
 lazy val is2_12 = settingKey[Boolean]("Is the scala version 2.12.")
 
@@ -14,11 +14,10 @@ val only2_12settings = Seq(
 
 val commonSettings = commonSmlBuildSettings ++ ossPublishSettings ++ Seq(
   organization := "com.softwaremill.sttp.tapir",
-  scalaVersion := scala2_12,
+  scalaVersion := scala2_13,
   crossScalaVersions := Seq(scala2_12, scala2_13),
   is2_12 := scalaVersion.value.startsWith("2.12."),
   libraryDependencies ++= Seq(
-    compilerPlugin("com.softwaremill.neme" %% "neme-plugin" % "0.0.5"),
     compilerPlugin("com.github.ghik" % "silencer-plugin" % Versions.silencer cross CrossVersion.full),
     "com.github.ghik" % "silencer-lib" % Versions.silencer % Provided cross CrossVersion.full
   )
