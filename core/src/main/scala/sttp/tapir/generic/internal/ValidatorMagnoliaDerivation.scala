@@ -1,6 +1,5 @@
 package sttp.tapir.generic.internal
 
-import com.github.ghik.silencer.silent
 import magnolia.{CaseClass, Magnolia, SealedTrait}
 import sttp.tapir.{Validator, generic}
 import sttp.tapir.generic.Configuration
@@ -19,7 +18,6 @@ trait ValidatorMagnoliaDerivation {
     }.toMap)
   }
 
-  @silent("never used")
   def dispatch[T](ctx: SealedTrait[Validator, T]): Validator[T] =
     Validator.Coproduct(new generic.SealedTrait[Validator, T] {
       override def dispatch(t: T): Typeclass[T] = ctx.dispatch(t) { v =>

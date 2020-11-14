@@ -1,6 +1,5 @@
 package sttp.tapir.typelevel
 
-import com.github.ghik.silencer.silent
 
 /**
   * Replace the first parameter of a function from I to J.
@@ -15,7 +14,6 @@ trait ReplaceFirstInFn[I, FN_IK[_], J, FN_JK[_]] {
 }
 
 object ReplaceFirstInFn {
-  @silent("never used")
   implicit def replaceFirst[FN_IK[_], I, IK, J, JK, FN_JK[_]](
       implicit
       p1: ParamsAsArgs.Aux[IK, FN_IK],

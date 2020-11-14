@@ -1,10 +1,8 @@
 package sttp.tapir.server.http4s
 
 import cats.effect.IO
-import com.github.ghik.silencer.silent
 import org.scalatest.{FunSuite, Matchers}
 
-@silent("never used")
 class RichToMonadOfEitherFunctionTest extends FunSuite with Matchers {
   case class Error(r: String)
   case class User(u: String)

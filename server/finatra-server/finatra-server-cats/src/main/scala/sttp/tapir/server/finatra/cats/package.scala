@@ -1,7 +1,6 @@
 package sttp.tapir.server.finatra
 
 import _root_.cats.effect.Effect
-import com.github.ghik.silencer.silent
 import com.twitter.inject.Logging
 import io.catbird.util.Rerunnable
 import io.catbird.util.effect._
@@ -15,7 +14,6 @@ package object cats {
       new RichFinatraEndpoint(e).toRoute(i => eff.toIO(logic(i)).to[Rerunnable].run)
     }
 
-    @silent("never used")
     def toRouteRecoverErrors[F[_]](logic: I => F[O])(
         implicit eIsThrowable: E <:< Throwable,
         eClassTag: ClassTag[E],

@@ -1,6 +1,5 @@
 package sttp.tapir.openapi
 
-import com.github.ghik.silencer.silent
 import io.circe.generic.semiauto._
 import io.circe.parser._
 import io.circe.syntax._
@@ -14,7 +13,6 @@ package object circe extends TapirOpenAPICirceEncoders
 trait TapirOpenAPICirceEncoders {
   // note: these are strict val-s, order matters!
 
-  @silent("possible missing interpolator")
   implicit def encoderReferenceOr[T: Encoder]: Encoder[ReferenceOr[T]] = {
     case Left(Reference(ref)) => Json.obj(("$ref", Json.fromString(ref)))
     case Right(t)             => implicitly[Encoder[T]].apply(t)

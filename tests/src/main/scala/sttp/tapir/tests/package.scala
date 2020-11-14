@@ -3,7 +3,6 @@ package sttp.tapir
 import java.io.{File, InputStream, PrintWriter}
 import java.nio.ByteBuffer
 
-import com.github.ghik.silencer.silent
 import io.circe.generic.auto._
 import sttp.tapir.json.circe._
 import com.softwaremill.macwire._
@@ -219,7 +218,6 @@ package object tests {
 
   //
 
-  @silent("never used")
   object Validation {
     type MyTaggedString = String @@ Tapir
 

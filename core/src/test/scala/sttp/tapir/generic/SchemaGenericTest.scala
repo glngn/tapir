@@ -2,7 +2,6 @@ package sttp.tapir.generic
 
 import java.math.{BigDecimal => JBigDecimal}
 
-import com.github.ghik.silencer.silent
 import org.scalatest.{FlatSpec, Matchers}
 import sttp.tapir.SchemaType._
 import sttp.tapir.{SchemaType, Schema}
@@ -11,7 +10,6 @@ import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
-@silent("never used")
 class SchemaGenericTest extends FlatSpec with Matchers {
   private val stringSchema = implicitly[Schema[String]]
   private val intSchema = implicitly[Schema[Int]]
@@ -291,7 +289,6 @@ case class C(h1: List[String], h2: Option[Int])
 case class D(someFieldName: String)
 case class F(f1: List[F], f2: Int)
 
-@silent("never used")
 class Custom(c: String)
 case class G(f1: Int, f2: Custom)
 

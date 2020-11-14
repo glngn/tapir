@@ -3,7 +3,6 @@ package sttp.tapir.server.http4s
 import cats.data._
 import cats.effect.{ContextShift, Sync}
 import cats.implicits._
-import com.github.ghik.silencer.silent
 import org.http4s.{EntityBody, HttpRoutes, Request, Response}
 import org.log4s._
 import sttp.tapir.internal.SeqToParams
@@ -60,7 +59,6 @@ class EndpointToHttp4sServer[F[_]: Sync: ContextShift](serverOptions: Http4sServ
     service
   }
 
-  @silent("never used")
   def toRoutesRecoverErrors[I, E, O](e: Endpoint[I, E, O, EntityBody[F]])(logic: I => F[O])(
       implicit eIsThrowable: E <:< Throwable,
       eClassTag: ClassTag[E]

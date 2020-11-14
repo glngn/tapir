@@ -5,7 +5,6 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives.RouteDirectives
 import akka.http.scaladsl.server.util.{Tuple => AkkaTuple}
-import com.github.ghik.silencer.silent
 import sttp.tapir._
 import sttp.tapir.server.{ServerDefaults, ServerEndpoint}
 import sttp.tapir.typelevel.ParamsToTuple
@@ -22,7 +21,6 @@ class EndpointToAkkaServer(serverOptions: AkkaHttpServerOptions) {
     }
   }
 
-  @silent("never used")
   def toRouteRecoverErrors[I, E, O](
       e: Endpoint[I, E, O, AkkaStream]
   )(logic: I => Future[O])(implicit eIsThrowable: E <:< Throwable, eClassTag: ClassTag[E]): Route = {

@@ -1,6 +1,5 @@
 package sttp.tapir.docs.openapi
 
-import com.github.ghik.silencer.silent
 import io.circe.Json
 import io.circe.generic.auto._
 import org.scalatest.{FunSuite, Matchers}
@@ -138,7 +137,6 @@ class VerifyYamlTest extends FunSuite with Matchers {
     val expectedYaml = loadYaml("expected_status_codes.yml")
 
     // work-around for #10: unsupported sealed trait families
-    @silent("never used") // it is used
     implicit val schemaForErrorInfo: Schema[ErrorInfo] = Schema[ErrorInfo](SchemaType.SProduct(SchemaType.SObjectInfo("ErrorInfo"), Nil))
 
     val e = endpoint.errorOut(
@@ -222,7 +220,6 @@ class VerifyYamlTest extends FunSuite with Matchers {
   test("should match the expected yaml when using nested coproduct types with discriminator") {
     val sPerson = implicitly[Schema[Person]]
     val sOrganization = implicitly[Schema[Organization]]
-    @silent("never used") // it is used
     implicit val sEntity: Schema[Entity] = Schema.oneOf[Entity, String](_.name, _.toString)("john" -> sPerson, "sml" -> sOrganization)
 
     val expectedYaml = loadYaml("expected_coproduct_discriminator_nested.yml")
@@ -295,7 +292,6 @@ class VerifyYamlTest extends FunSuite with Matchers {
     val expectedYaml = loadYaml("expected_descriptions_in_nested_custom_schemas.yml")
 
     import SchemaType._
-    @silent("never used")
     implicit val customFruitAmountSchema: Schema[FruitAmount] = Schema(
       SProduct(SObjectInfo("tapir.tests.FruitAmount", Nil), List(("fruit", Schema(SString)), ("amount", Schema(SInteger).format("int32"))))
     ).description("Amount of fruits")
@@ -312,7 +308,6 @@ class VerifyYamlTest extends FunSuite with Matchers {
   test("should use descriptions from customised derived schemas") {
     val expectedYaml = loadYaml("expected_descriptions_in_nested_custom_schemas.yml")
 
-    @silent("never used")
     implicit val customFruitAmountSchema: Schema[FruitAmount] = implicitly[Derived[Schema[FruitAmount]]].value
       .description("Amount of fruits")
       .modifyUnsafe[Nothing]("amount")(_.format("int32"))
